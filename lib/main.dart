@@ -43,7 +43,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // Properly initialize the ImagePicker
     imagePicker = ImagePicker();
   }
-
+// Image choosing method
   chooseImage() async {
     XFile? selectedImage = await imagePicker.pickImage(source: ImageSource.gallery);
     if (selectedImage != null) {
@@ -53,6 +53,19 @@ class _MyHomePageState extends State<MyHomePage> {
       });
     }
   }
+
+  //Image Capturing Method
+
+  captureImage() async {
+    XFile? selectedImage = await imagePicker.pickImage(source: ImageSource.camera);
+    if (selectedImage != null) {
+      image = File(selectedImage.path);
+      setState(() {
+        image;
+      });
+    }
+  }
+
 
   void _incrementCounter() {
     setState(() {
@@ -81,7 +94,9 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () {
                 chooseImage();
               },
-
+            onLongPress: (){
+                captureImage();
+            },
               child: Text("Choose/Capture"),
             )
           ],
