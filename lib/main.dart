@@ -13,12 +13,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Gallery/Camera Picker App',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      debugShowCheckedModeBanner: false, // Remove the debug banner
+      home: const MyHomePage(title: 'Gallery/Camera Picker App'),
     );
   }
 }
@@ -43,7 +44,8 @@ class _MyHomePageState extends State<MyHomePage> {
     // Properly initialize the ImagePicker
     imagePicker = ImagePicker();
   }
-// Image choosing method
+
+  // Image choosing method
   chooseImage() async {
     XFile? selectedImage = await imagePicker.pickImage(source: ImageSource.gallery);
     if (selectedImage != null) {
@@ -54,8 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  //Image Capturing Method
-
+  // Image capturing method
   captureImage() async {
     XFile? selectedImage = await imagePicker.pickImage(source: ImageSource.camera);
     if (selectedImage != null) {
@@ -65,7 +66,6 @@ class _MyHomePageState extends State<MyHomePage> {
       });
     }
   }
-
 
   void _incrementCounter() {
     setState(() {
@@ -78,6 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        centerTitle: true, // Center the title
         title: Text(widget.title),
       ),
       body: Center(
@@ -94,9 +95,9 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () {
                 chooseImage();
               },
-            onLongPress: (){
+              onLongPress: () {
                 captureImage();
-            },
+              },
               child: Text("Choose/Capture"),
             )
           ],
