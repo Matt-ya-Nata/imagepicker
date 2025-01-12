@@ -14,13 +14,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Gallery/Camera Picker App',
+      title: 'Object Recognizer',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false, // Remove the debug banner
-      home: const MyHomePage(title: 'Gallery/Camera Picker App'),
+      home: const MyHomePage(
+        title: 'Object Recogniser',
+      ),
     );
   }
 }
@@ -35,7 +37,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   File? image;
   late ImagePicker imagePicker;
   late ImageLabeler labeler;
@@ -45,13 +46,15 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     // Properly initialize the ImagePicker
     imagePicker = ImagePicker();
-    ImageLabelerOptions options = ImageLabelerOptions(confidenceThreshold:0.60);
+    ImageLabelerOptions options =
+        ImageLabelerOptions(confidenceThreshold: 0.60);
     labeler = ImageLabeler(options: options);
   }
 
   // Image choosing method
   chooseImage() async {
-    XFile? selectedImage = await imagePicker.pickImage(source: ImageSource.gallery);
+    XFile? selectedImage =
+        await imagePicker.pickImage(source: ImageSource.gallery);
     if (selectedImage != null) {
       image = File(selectedImage.path);
       performImageLabeling();
@@ -63,7 +66,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   // Image capturing method
   captureImage() async {
-    XFile? selectedImage = await imagePicker.pickImage(source: ImageSource.camera);
+    XFile? selectedImage =
+        await imagePicker.pickImage(source: ImageSource.camera);
     if (selectedImage != null) {
       image = File(selectedImage.path);
       performImageLabeling();
@@ -85,23 +89,20 @@ class _MyHomePageState extends State<MyHomePage> {
       final String text = label.label;
       final int index = label.index;
       final double confidence = label.confidence;
-      print(text+"    "+confidence.toString());
-      results+=text+"   "+confidence.toStringAsFixed(2)+ "\n";
+      print(text + "    " + confidence.toString());
+      results += text + "   " + confidence.toStringAsFixed(2) + "\n";
     }
 
     setState(() {
       results;
     });
-
   }
-
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        backgroundColor: Colors.indigo.shade400,
         centerTitle: true, // Center the title
         title: Text(widget.title),
       ),
@@ -110,22 +111,58 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              image == null
-                  ? const Icon(
-                Icons.image,
-                size: 150,
-              )
-                  : Image.file(image!),
-              ElevatedButton(
-                onPressed: () {
-                  chooseImage();
-                },
-                onLongPress: () {
-                  captureImage();
-                },
-                child: const Text("Choose/Capture"),
+              Card(
+                color: Colors.grey,
+                margin: EdgeInsets.all(10),
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height / 2,
+                  child: image == null
+                      ? const Icon(
+                          Icons.image,
+                          size: 150,
+                        )
+                      : Image.file(image!),
+                ),
               ),
-              Text(results)
+              Card(
+                margin: EdgeInsets.all(10),
+                color: Colors.indigo.shade400,
+                child: Container(
+                  height: 100,
+                  child: Row(
+                    children: [
+                      InkWell(
+                        child: Icon(
+                          Icons.image,
+                          size: 50,
+                        ),
+                        onTap: () {
+                          chooseImage();
+                        },
+                      ),
+                      InkWell(
+                        child: Icon(
+                          Icons.camera,
+                          size: 50,
+                        ),
+                        onTap: () {
+                          captureImage();
+                        },
+                      )
+                    ],
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  ),
+                ),
+              ),
+              Card(
+                child: Container(
+                  child: Text(results,style: TextStyle(fontSize:13),),
+                  width: MediaQuery.of(context).size.width,
+                  padding: EdgeInsets.all(10),
+                ),
+                margin: EdgeInsets.all(10),
+              )
             ],
           ),
         ),
