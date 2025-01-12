@@ -74,8 +74,9 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   //Method to pass image to image labeling model
-
+  String results = "";
   performImageLabeling() async {
+    results = "";
     InputImage inputImage = InputImage.fromFile(image!);
 
     final List<ImageLabel> labels = await labeler.processImage(inputImage);
@@ -85,7 +86,12 @@ class _MyHomePageState extends State<MyHomePage> {
       final int index = label.index;
       final double confidence = label.confidence;
       print(text+"    "+confidence.toString());
+      results+=text+"   "+confidence.toStringAsFixed(2)+ "\n";
     }
+
+    setState(() {
+      results;
+    });
 
   }
 
@@ -100,25 +106,28 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            image == null
-                ? const Icon(
-              Icons.image,
-              size: 150,
-            )
-                : Image.file(image!),
-            ElevatedButton(
-              onPressed: () {
-                chooseImage();
-              },
-              onLongPress: () {
-                captureImage();
-              },
-              child: const Text("Choose/Capture"),
-            )
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              image == null
+                  ? const Icon(
+                Icons.image,
+                size: 150,
+              )
+                  : Image.file(image!),
+              ElevatedButton(
+                onPressed: () {
+                  chooseImage();
+                },
+                onLongPress: () {
+                  captureImage();
+                },
+                child: const Text("Choose/Capture"),
+              ),
+              Text(results)
+            ],
+          ),
         ),
       ),
     );
