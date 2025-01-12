@@ -34,7 +34,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+
   File? image;
   late ImagePicker imagePicker;
 
@@ -67,11 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             image == null
-                ? Icon(
+                ? const Icon(
               Icons.image,
               size: 150,
             )
@@ -98,7 +94,7 @@ class _MyHomePageState extends State<MyHomePage> {
               onLongPress: () {
                 captureImage();
               },
-              child: Text("Choose/Capture"),
+              child: const Text("Choose/Capture"),
             )
           ],
         ),
