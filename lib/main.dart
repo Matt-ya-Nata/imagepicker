@@ -156,8 +156,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
               Card(
+                color: Colors.grey,
                 child: Container(
-                  child: Text(results,style: TextStyle(fontSize:13),),
+                  child: Text(results,style: TextStyle(fontSize:24),),
                   width: MediaQuery.of(context).size.width,
                   padding: EdgeInsets.all(10),
                 ),
